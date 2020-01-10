@@ -10,21 +10,21 @@ train_data['type'] = 'train'
 test_data['type'] = 'test'
 # print(train_data.head())
 # info：缺失
-# print(train_data.info())
+print(train_data.info())
 # 连续变量的描述信息，包括缺失，中位数，标准差，最小值，最大值，四分位数
 # print(train_data.describe())
 # 离散型变量的描述信息
 # print(train_data.describe(include='0'))
 # print(train_data.corr())
 # 将训练集标签单独保存
-train_label = train_data.pop('tradeMoney')
+# train_label = train_data.pop('tradeMoney')
 # 将训练集与测试集合并
 all_data = pd.concat([train_data, test_data], ignore_index=True, sort=True)
 # print(all_data.info())
 
 # 分别找出分类型和连续型数据
 categorical_features = ['rentType', 'houseType', 'houseFloor',  'houseToward',
-                       'houseDecoration', 'communityName', 'city', 'region', 'plate', 'buildYear',
+                       'houseDecoration', 'communityName', 'region', 'plate', 'buildYear',
                        'tradeTime']
 numerical_features = ['ID', 'area', 'totalFloor', 'saleSecHouseNum', 'subwayStationNum', 'busStationNum',
                      'interSchoolNum', 'schoolNum', 'privateSchoolNum', 'hospitalNum', 'drugStoreNum',
@@ -75,7 +75,7 @@ for feature in categorical_features:
         plt.show()
 
 # 删除不需要的数据
-# all_data.drop(['city'])
+all_data.drop(['city'], axis=1, inplace=True)
 
 # 统计特征值出现频次大于100的特征
 for feature in categorical_features:
@@ -92,3 +92,11 @@ sns.distplot(train_data[(train_data['tradeMoney'] <= 20000)]['tradeMoney'], ax=a
 sns.distplot(train_data[(train_data['tradeMoney'] > 20000) & (train_data['tradeMoney'] <= 50000)]['tradeMoney'], ax=axes[0][2])
 sns.distplot(train_data[(train_data['tradeMoney'] > 50000) & (train_data['tradeMoney'] <= 100000)]['tradeMoney'], ax=axes[1][0])
 sns.distplot(train_data[(train_data['tradeMoney'] > 100000)]['tradeMoney'], ax=axes[1][1])
+plt.show()
+
+print("money <= 10000", len(train_data[train_data['tradeMoney'] <= 10000]['tradeMoney']))
+print('10000 < money <= 20000', len(train_data[(train_data['tradeMoney'] > 10000) & (train_data['tradeMoney'] <= 20000)]['tradeMoney']))
+print('20000 < money <= 50000', len(train_data[(train_data['tradeMoney'] > 20000) & (train_data['tradeMoney'] <= 50000)]['tradeMoney']))
+print('50000 < money <= 100000', len(train_data[(train_data['tradeMoney'] > 50000) & (train_data['tradeMoney'] <= 100000)]['tradeMoney']))
+print("money > 100000", len(train_data[train_data['tradeMoney'] > 100000]['tradeMoney']))
+
